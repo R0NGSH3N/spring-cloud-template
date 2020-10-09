@@ -1,0 +1,36 @@
+server:
+  port: 9001
+spring:
+  profiles:
+    active: native
+  cloud:
+    config:
+      server:
+        native:
+          searchLocations: classpath:config-repo/${profile}
+
+management:
+  security:
+    enabled: false
+#        git:
+#          uri: ../config-repo
+#          repos:
+#            dev:
+#              pattern:
+#                - '*/dev'
+#              uri: ../config/repo/dev
+#            qa:
+#              pattern:
+#                - '*/qa'
+#              uri: ../config-repo/qa
+#            prod:
+#              pattern:
+#                - '*/prod'
+#              uri: ../config-repo/prod
+#            uat:
+#              pattern:
+#                - '*/uat'
+#              uri: ../config-repo/uat
+
+
+#Disable security of the Management endpoint
