@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: producer-helloworld-service
+  profiles:
+    active: dev
+  cloud:
+    config:
+      uri: http://localhost:9001
