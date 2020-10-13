@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: producer-helloworld-service
+  profiles:
+    active: dev
+  cloud:
+    config:
+      uri: http://localhost:9001
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instanace:
+    prefer-ip-address: true

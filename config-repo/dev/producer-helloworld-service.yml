@@ -1,0 +1,28 @@
+server:
+  port: 8888
+spring:
+  jpa:
+    # pring SQL in hibernate
+    show-sql: true
+logging:
+  level:
+    root: INFO
+    # hibernate logging setting
+    org.hibernate: INFO
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.hibernate.type.descriptor.sql.BasicExtractor: TRACE
+management:
+  health:
+      defaults:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        # open all the monitor points
+        include: '*'
+  endpoint:
+    health:
+      # display all the health indicators
+      show-details: always
+
+
