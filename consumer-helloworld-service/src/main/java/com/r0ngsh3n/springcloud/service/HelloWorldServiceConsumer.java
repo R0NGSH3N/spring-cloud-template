@@ -1,5 +1,9 @@
 package com.r0ngsh3n.springcloud.service;
 
+import io.github.resilience4j.bulkhead.annotation.Bulkhead;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +23,10 @@ public class HelloWorldServiceConsumer {
     }
 
     @GetMapping("/withRestTemplate")
+    @CircuitBreaker(name="producer-helloworld-service", fallbackMethod = "fallback")
+    @Bulkhead(name = "producer-helloworld-service", type = Bulkhead.Type.SEMAPHORE, fallbackMethod = "fallbackBulkhead")
+    @RateLimiter(name = "producer-helloworld-service", fallbackMethod = "fallbackForRatelimit")
+    @Retry(name = "get", fallbackMethod = "fallbackRetry")
     public String testHelloWorldService(){
         String answer = this.restTemplate.getForObject("http://producer-helloworld-service/test/greeting", String.class);
         return getAnswer(answer);
@@ -36,5 +44,13 @@ public class HelloWorldServiceConsumer {
         }else{
             return "Failed to call producer-helloworld-service";
         }
+    }
+
+    private String fallbackBulkhead(){
+        return null;
+    }
+
+    private String fallback(){
+        return getAnswer("");
     }
 }

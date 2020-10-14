@@ -9,3 +9,39 @@ eureka:
       defaultZone: http://localhost:8761/eureka/
   instanace:
     prefer-ip-address: true
+
+resilience4j.circuitbreaker:
+  instances:
+    producer-helloworld-service:
+      registerHealthIndicator: true
+      ringBufferSizeInClosedState: 5
+      ringBufferSizeInHalfOpenState: 3
+      waitDurationInOpenState: 10s
+      failureRateThreshold: 50
+      recordExceptions:
+        - org.springframework.web.client.HttpServerErrorException
+        - java.io.IOException
+        - java.util.concurrent.TimeoutException
+        - org.springframework.web.client.ResourceAccessException
+        - org.springframework.web.client.HttpClientErrorException
+      ignoreExceptions:
+
+resilience4j.ratelimiter:
+  instances:
+    producer-helloworld-service:
+      limitForPeriod: 5
+      limitRefreshPeriod: 10000 #ms
+      timeoutDuration: 1000ms
+
+resilience4j.retry:
+  instances:
+    producer-helloworld-service:
+      maxRetryAttempts: 3
+      waitDuration: 5000
+
+resilience4j.bulkhead:
+  instances:
+    producer-helloworld-service:
+      max-concurrent-calls: 10
+      maxWaitDuration: 10ms
+
